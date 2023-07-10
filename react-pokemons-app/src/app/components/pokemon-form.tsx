@@ -36,7 +36,7 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
     name: { value: pokemon.name, isValid: true },
     hp: { value: pokemon.hp, isValid: true },
     cp: { value: pokemon.cp, isValid: true },
-    types: { value: pokemon.types, isValid: true },
+    types: { value: pokemon.types ?? [], isValid: true },
   });
 
   const types: pokemonTypes[] = [
@@ -54,7 +54,7 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
   ];
 
   function hasType(type: string): boolean {
-    return form.types.value?.includes(type);
+    return form.types.value.includes(type);
   }
 
   /*

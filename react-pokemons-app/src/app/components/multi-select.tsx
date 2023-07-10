@@ -34,7 +34,7 @@ function MultiSelect(props: Props) {
 
   return (
     <div className="MultiSelect">
-      <div className="values" onClick={handleClickValues}>{props.selected.join(', ')}</div>
+      <div className="values" onClick={handleClickValues}>{props.selected.length ? props.selected.join(', ') : 'Select...'}</div>
       {menuOpen && (
         <div className="menu">
           {props.items.map((item) => (

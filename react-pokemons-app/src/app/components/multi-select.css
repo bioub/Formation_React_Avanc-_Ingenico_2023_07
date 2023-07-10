@@ -1,0 +1,18 @@
+.MultiSelect {
+
+}
+
+.values {
+  border: 1px solid black;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.menu {
+  border: 1px solid black;
+}
+
+.item {
+  padding: 5px;
+  cursor: pointer;
+}

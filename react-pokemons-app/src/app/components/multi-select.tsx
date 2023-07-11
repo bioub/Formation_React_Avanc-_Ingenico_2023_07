@@ -1,13 +1,15 @@
 import './multi-select.css';
-import React, { MouseEvent as ReactMouseEvent, useEffect, useRef, useState } from 'react';
+import React, { MouseEvent as ReactMouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
 
 type Props = {
   items: string[];
   selected: string[];
   onSelect(selection: string[]): void;
+  renderItem?(item: string): ReactNode;
+  renderValues?(selection: string[]): ReactNode;
 };
 
-function MultiSelect({ items = [], selected = [], onSelect }: Props) {
+function MultiSelect({ items = [], selected = [], onSelect, renderItem, renderValues }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
 
@@ -50,6 +52,8 @@ function MultiSelect({ items = [], selected = [], onSelect }: Props) {
   }, [menuOpen]);
    */
 
+  // console.log(selected[0].toUpperCase());
+
   function handleClickValues(event: ReactMouseEvent<HTMLDivElement>) {
     console.log('click div values')
     setMenuOpen(!menuOpen);
@@ -65,14 +69,14 @@ function MultiSelect({ items = [], selected = [], onSelect }: Props) {
 
   return (
     <div className="MultiSelect" ref={hostRef}>
-      <div className="values" onClick={handleClickValues}>{selected.length ? selected.join(', ') : 'Select...'}</div>
+      <div className="values" onClick={handleClickValues}>{selected.length ? renderValues ? renderValues(selected) : selected.join(', ') : 'Select...'}</div>
       {menuOpen && (
         <div className="menu">
           {items.map((item) => (
             <div className="item" key={item}>
               <label>
                 <input type="checkbox" className="filled-in" checked={selected.includes(item)} onChange={() => handleClickItem(item)} />
-                <span>{item}</span>
+                <span>{renderItem ? renderItem(item) : item}</span>
               </label>
             </div>
           ))}

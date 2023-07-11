@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { CompareContext } from '../helpers/compare-context';
 import { Pokemon } from '../models/pokemon';
 import './pokemon-card.css';
 import { formatDate, formatType } from '../helpers';
@@ -12,6 +13,8 @@ type Props = {
 function PokemonCard({ pokemon }: Props) {
   const navigate = useNavigate();
   // const [likes, setLikes] = useState(0);
+
+  const { pokemonsIdsToCompare, selectPokemonToCompare } = useContext(CompareContext);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -45,8 +48,10 @@ function PokemonCard({ pokemon }: Props) {
                 {type}
               </span>
             ))}
-            <label onClick={(event) => event.stopPropagation()}>
-              <input type="checkbox" />
+            <label onClick={(event) => {
+              event.stopPropagation();
+            }}>
+              <input type="checkbox" checked={pokemonsIdsToCompare.has(pokemon.id ?? 0)} onChange={() => selectPokemonToCompare(pokemon.id ?? 0)} />
               <span>Compare</span>
             </label>
             <LikeButton ref={buttonRef} />

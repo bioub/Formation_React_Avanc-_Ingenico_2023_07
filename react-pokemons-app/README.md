@@ -77,16 +77,24 @@ Utiliser ce composant List à la place de `pokemons.map` dans le composant `src/
 
 ## Custom Hooks
 
-Les pages privées sont accessible que via login/password
+Dans le composant `MultiSelect`, créer un custom hooks `useEventListener` qui prendra 3 paramètres :
+- `element` de type `EventTarget`
+- `eventName` de type `string`
+- `listener` de type `(event: Event) => void`
 
-Les composants associé contiennent toujours le même code :
+Placer le code suivant dans ce custom hook en remplaçant `window`, `'click'` et `listener` par les paramètres de `useEventListener` :
 
 ```
-if (!isAuthenticated) {
-  return <Navigate to={{ pathname: '/login' }} />;
-}
+ useEffect(() => {
+  function listener(event: MouseEvent) {
+    if (!hostRef.current?.contains(event.target as HTMLElement)) {
+      setMenuOpen(false);
+    }
+  }
+
+  window.addEventListener('click', listener);
+  return () => {
+    window.removeEventListener('click', listener);
+  };
+}, []);
 ```
-
-Créer un custom hook useAuthentication dans `src/app/helpers/custom-hooks.ts`
-
-Ce hook reprend le code précédent et remplace `return <Navigate to={{ pathname: '/login' }} />;` par l'appel à la fonction navigate (voir le fichier `src/app/components/pokemon-card.tsx` pour un exemple)

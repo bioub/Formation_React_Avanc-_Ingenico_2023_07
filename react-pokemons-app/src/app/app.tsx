@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import RenderTryCatch from './components/render-try-catch';
+import { CompareProvider } from './helpers/compare-context';
 import PokemonCompare from './pages/pokemon-compare';
 import PokemonsList from './pages/pokemon-list';
 import PokemonsDetail from './pages/pokemon-detail';
@@ -12,29 +13,31 @@ import PrivateRoute from './private-route';
 function App() {
   return (
     <BrowserRouter>
-      <div>
-        <nav>
-          <div className="nav-wrapper teal">
-            <Link to="/" className="brand-logo center">
-              Pokédex
-            </Link>
-          </div>
-        </nav>
-        <RenderTryCatch>
-          <Routes>
-            <Route index path="/" element={<PokemonsList />} />
-            <Route path="/login" element={<Login />} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/pokemons" element={<PokemonsList />} />
-              <Route path="/pokemon/add" element={<PokemonAdd />} />
-              <Route path="/pokemons/compare" element={<PokemonCompare />} />
-              <Route path="/pokemons/edit/:id" element={<PokemonEdit />} />
-              <Route path="/pokemons/:id" element={<PokemonsDetail />} />
-            </Route>
-            <Route element={<PageNotFound />} />
-          </Routes>
-        </RenderTryCatch>
-      </div>
+      <CompareProvider>
+        <div>
+          <nav>
+            <div className="nav-wrapper teal">
+              <Link to="/" className="brand-logo center">
+                Pokédex
+              </Link>
+            </div>
+          </nav>
+          <RenderTryCatch>
+            <Routes>
+              <Route index path="/" element={<PokemonsList />} />
+              <Route path="/login" element={<Login />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/pokemons" element={<PokemonsList />} />
+                <Route path="/pokemon/add" element={<PokemonAdd />} />
+                <Route path="/pokemons/compare" element={<PokemonCompare />} />
+                <Route path="/pokemons/edit/:id" element={<PokemonEdit />} />
+                <Route path="/pokemons/:id" element={<PokemonsDetail />} />
+              </Route>
+              <Route element={<PageNotFound />} />
+            </Routes>
+          </RenderTryCatch>
+        </div>
+      </CompareProvider>
     </BrowserRouter>
   );
 }

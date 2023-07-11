@@ -25,6 +25,14 @@ function MultiSelect({
   const [menuOpen, setMenuOpen] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
 
+  /*
+  useEventListener(window, 'click', (event: MouseEvent) => {
+    if (!hostRef.current?.contains(event.target as HTMLElement)) {
+      setMenuOpen(false);
+    }
+  })
+   */
+
   useEffect(() => {
     function listener(event: MouseEvent) {
       if (!hostRef.current?.contains(event.target as HTMLElement)) {

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import PokemonCompare from './pages/pokemon-compare';
 import PokemonsList from './pages/pokemon-list';
 import PokemonsDetail from './pages/pokemon-detail';
 import PokemonEdit from './pages/pokemon-edit';
@@ -24,6 +25,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/pokemons" element={<PokemonsList />} />
             <Route path="/pokemon/add" element={<PokemonAdd />} />
+            <Route path="/pokemons/compare" element={<PokemonCompare />} />
             <Route path="/pokemons/edit/:id" element={<PokemonEdit />} />
             <Route path="/pokemons/:id" element={<PokemonsDetail />} />
           </Route>

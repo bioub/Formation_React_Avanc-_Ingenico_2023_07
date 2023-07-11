@@ -1,5 +1,5 @@
 import './multi-select.css';
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent as ReactMouseEvent, useEffect, useRef, useState } from 'react';
 
 type Props = {
   items: string[];
@@ -7,40 +7,71 @@ type Props = {
   onSelect(selection: string[]): void;
 };
 
-function MultiSelect(props: Props) {
+function MultiSelect({ items = [], selected = [], onSelect }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const hostRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function listener(event: MouseEvent) {
+      if (!hostRef.current?.contains(event.target as HTMLElement)) {
+        setMenuOpen(false);
+      }
+    }
+    window.addEventListener('click', listener);
+    return () => {
+      window.removeEventListener('click', listener);
+    }
+  }, []);
 
   /*
-  const els = [];
+  useEffect(() => {
+    console.log('effect mount + juste après render (sauf le premier)')
+    return () => {
+      console.log('effect unmount + juste avant render (sauf le premier)')
+    }
+  });
+   */
 
-  for (const item of props.items) {
-    els.push(<div>{item}</div>)
-  }
+  /*
+  useEffect(() => {
+    console.log('effect mount')
+    return () => {
+      console.log('effect unmount')
+    }
+  }, []);
+   */
 
-  const els = props.items.map((item) => <div>{item}</div>);
-  */
+  /*
+  useEffect(() => {
+    console.log('effect mount + juste après render (sauf le premier) que si menuOpen change')
+    return () => {
+      console.log('effect unmount + juste avant render (sauf le premier) que si menuOpen change')
+    }
+  }, [menuOpen]);
+   */
 
-  function handleClickValues(event: MouseEvent<HTMLDivElement>) {
+  function handleClickValues(event: ReactMouseEvent<HTMLDivElement>) {
+    console.log('click div values')
     setMenuOpen(!menuOpen);
   }
 
   function handleClickItem(item: string) {
-    if (props.selected.includes(item)) {
-      props.onSelect(props.selected.filter((el) => el !== item));
+    if (selected.includes(item)) {
+      onSelect(selected.filter((el) => el !== item));
     } else {
-      props.onSelect([...props.selected, item]);
+      onSelect([...selected, item]);
     }
   }
 
   return (
-    <div className="MultiSelect">
-      <div className="values" onClick={handleClickValues}>{props.selected.length ? props.selected.join(', ') : 'Select...'}</div>
+    <div className="MultiSelect" ref={hostRef}>
+      <div className="values" onClick={handleClickValues}>{selected.length ? selected.join(', ') : 'Select...'}</div>
       {menuOpen && (
         <div className="menu">
-          {props.items.map((item) => (
+          {items.map((item) => (
             <div className="item" key={item}>
               <label>
-                <input type="checkbox" className="filled-in" checked={props.selected.includes(item)} onChange={() => handleClickItem(item)} />
+                <input type="checkbox" className="filled-in" checked={selected.includes(item)} onChange={() => handleClickItem(item)} />
                 <span>{item}</span>
               </label>
             </div>

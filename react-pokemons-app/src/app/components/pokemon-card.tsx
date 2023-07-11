@@ -34,6 +34,10 @@ function PokemonCard({ pokemon }: Props) {
                 {type}
               </span>
             ))}
+            <label onClick={(event) => event.stopPropagation()}>
+              <input type="checkbox"/>
+              <span>Compare</span>
+            </label>
           </div>
         </div>
       </div>

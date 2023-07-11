@@ -26,6 +26,9 @@ function PokemonList() {
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
         </div>
+        <Link to="/pokemons/compare">
+          Compare
+        </Link>
       </div>
       <Link
         className="btn-floating btn-large waves-effect waves-light red z-depth-3"

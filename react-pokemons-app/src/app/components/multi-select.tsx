@@ -1,4 +1,4 @@
-import './multi-select.css';
+import styles from './multi-select.module.css';
 import React, {
   MouseEvent as ReactMouseEvent,
   ReactNode,
@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import classNames from 'classnames';
 
 type Props = {
   items: string[];
@@ -89,8 +90,8 @@ function MultiSelect({
   }
 
   return (
-    <div className="MultiSelect" ref={hostRef}>
-      <div className="values" onClick={handleClickValues}>
+    <div className={styles.MultiSelect} ref={hostRef}>
+      <div className={styles.values} onClick={handleClickValues}>
         {selected.length
           ? renderValues
             ? renderValues(selected)
@@ -98,9 +99,9 @@ function MultiSelect({
           : 'Select...'}
       </div>
       {menuOpen && (
-        <div className="menu">
+        <div className={styles.menu}>
           {items.map((item) => (
-            <div className="item" key={item}>
+            <div className={classNames(styles.item, {[styles.selected]: selected.includes(item)})} key={item}>
               <label>
                 <input
                   type="checkbox"

@@ -98,3 +98,33 @@ Placer le code suivant dans ce custom hook en remplaçant `window`, `'click'` et
   };
 }, []);
 ```
+
+## Styling
+
+Installer `classnames`
+
+Transformer le fichier `src/app/components/pokemon-card.css` en module CSS
+
+Utiliser classnames et le nom de classe généré par le module pour l'élément `<div className="card horizontal">`
+
+## React-i18next
+
+Installer react-i18next en dependency et i18next-parser en devDependency
+
+Configurer i18next dans le fichier `main.tsx` comme dans les slides.
+
+Utiliser le hook useTranslation pour traduire les textes présent dans login.tsx (utiliser les clés suivantes) :
+- Vous êtes déconnecté. (pikachu / pikachu) : `login.banner.default`
+- 👉 Tentative de connexion en cours ... : `login.banner.loading`
+- 🔐 Identifiant ou mot de passe incorrect. : `login.banner.error`
+- Votre prénom doit faire au moins 3 caractères de long. : `login.firstName.error`
+- Votre mot de passe doit faire au moins 6 caractères de long. : `login.password.error`
+- Identifiant : `login.username`
+- Mot de passe : `login.password`
+- Valider : `login.button`
+
+Configurer et extraire les clés de traduction avec `i18next-parser` comme dans les slides (`fr` et `en`)
+
+Remplir les fichiers de traduction.
+
+Créer 2 boutons `fr` et `en` dans le menu pokedex dans `app.tsx`, changer la langue au click de ces boutons (`i18n.changeLanguage('fr')`)

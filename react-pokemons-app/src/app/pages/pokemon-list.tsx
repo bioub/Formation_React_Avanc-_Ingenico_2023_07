@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {Pokemon} from '../models/pokemon';
+import { Pokemon } from '../models/pokemon';
 import PokemonCard from '../components/pokemon-card';
 import { getPokemons } from '../services/pokemon-service';
 import { Link, Navigate } from 'react-router-dom';
@@ -26,9 +26,7 @@ function PokemonList() {
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
         </div>
-        <Link to="/pokemons/compare">
-          Compare
-        </Link>
+        <Link to="/pokemons/compare">Compare</Link>
       </div>
       <Link
         className="btn-floating btn-large waves-effect waves-light red z-depth-3"

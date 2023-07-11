@@ -1,12 +1,11 @@
 import { Component, PropsWithChildren } from 'react';
 
-type Props = PropsWithChildren<{
-
-}>;
+type Props = PropsWithChildren<{}>;
 
 type State = {
-  hasError: boolean
-}
+  hasError: boolean;
+};
+
 class RenderTryCatch extends Component<Props, State> {
   readonly state: State = {
     hasError: false,
@@ -15,7 +14,7 @@ class RenderTryCatch extends Component<Props, State> {
   static getDerivedStateFromError(error: Error, errorInfo: React.ErrorInfo) {
     return {
       hasError: true,
-    }
+    };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -25,9 +24,17 @@ class RenderTryCatch extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return <div onClick={() => this.setState({
-        hasError: false
-      })}>Une erreur s'est produite</div>;
+      return (
+        <div
+          onClick={() =>
+            this.setState({
+              hasError: false,
+            })
+          }
+        >
+          Une erreur s'est produite
+        </div>
+      );
     }
 
     return this.props.children;

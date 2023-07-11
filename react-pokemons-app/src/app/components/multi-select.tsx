@@ -1,5 +1,11 @@
 import './multi-select.css';
-import React, { MouseEvent as ReactMouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import React, {
+  MouseEvent as ReactMouseEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 type Props = {
   items: string[];
@@ -9,7 +15,13 @@ type Props = {
   renderValues?(selection: string[]): ReactNode;
 };
 
-function MultiSelect({ items = [], selected = [], onSelect, renderItem, renderValues }: Props) {
+function MultiSelect({
+  items = [],
+  selected = [],
+  onSelect,
+  renderItem,
+  renderValues,
+}: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
 
@@ -19,10 +31,11 @@ function MultiSelect({ items = [], selected = [], onSelect, renderItem, renderVa
         setMenuOpen(false);
       }
     }
+
     window.addEventListener('click', listener);
     return () => {
       window.removeEventListener('click', listener);
-    }
+    };
   }, []);
 
   /*
@@ -55,7 +68,7 @@ function MultiSelect({ items = [], selected = [], onSelect, renderItem, renderVa
   // console.log(selected[0].toUpperCase());
 
   function handleClickValues(event: ReactMouseEvent<HTMLDivElement>) {
-    console.log('click div values')
+    console.log('click div values');
     setMenuOpen(!menuOpen);
   }
 
@@ -69,13 +82,24 @@ function MultiSelect({ items = [], selected = [], onSelect, renderItem, renderVa
 
   return (
     <div className="MultiSelect" ref={hostRef}>
-      <div className="values" onClick={handleClickValues}>{selected.length ? renderValues ? renderValues(selected) : selected.join(', ') : 'Select...'}</div>
+      <div className="values" onClick={handleClickValues}>
+        {selected.length
+          ? renderValues
+            ? renderValues(selected)
+            : selected.join(', ')
+          : 'Select...'}
+      </div>
       {menuOpen && (
         <div className="menu">
           {items.map((item) => (
             <div className="item" key={item}>
               <label>
-                <input type="checkbox" className="filled-in" checked={selected.includes(item)} onChange={() => handleClickItem(item)} />
+                <input
+                  type="checkbox"
+                  className="filled-in"
+                  checked={selected.includes(item)}
+                  onChange={() => handleClickItem(item)}
+                />
                 <span>{renderItem ? renderItem(item) : item}</span>
               </label>
             </div>

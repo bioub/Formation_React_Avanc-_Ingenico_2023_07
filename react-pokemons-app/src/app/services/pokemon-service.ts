@@ -81,7 +81,5 @@ export async function searchPokemon(term: string): Promise<Pokemon[]> {
     return await response.json();
   }
 
-  return POKEMONS.filter((p) =>
-    p.name?.includes(term)
-  );
+  return POKEMONS.filter((p) => p.name?.includes(term));
 }

@@ -16,9 +16,7 @@ function PokemonSearch() {
       return;
     }
 
-    searchPokemon(term).then((pokemons) =>
-      setPokemons(pokemons)
-    );
+    searchPokemon(term).then((pokemons) => setPokemons(pokemons));
   }
 
   return (

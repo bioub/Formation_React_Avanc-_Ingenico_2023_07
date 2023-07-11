@@ -15,9 +15,7 @@ function PokemonsDetail() {
   const [pokemon, setPokemon] = useState<Pokemon | undefined>();
 
   useEffect(() => {
-    getPokemon(Number(params.id)).then((pokemon) =>
-      setPokemon(pokemon)
-    );
+    getPokemon(Number(params.id)).then((pokemon) => setPokemon(pokemon));
   }, [params.id]);
 
   return (

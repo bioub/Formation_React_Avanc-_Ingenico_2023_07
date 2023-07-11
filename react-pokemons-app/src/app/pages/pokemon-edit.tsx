@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import PokemonForm from '../components/pokemon-form';
-import {Pokemon} from '../models/pokemon';
+import { Pokemon } from '../models/pokemon';
 import Loader from '../components/loader';
 import { isAuthenticated } from '../services/authentication-service';
 import { getPokemon } from '../services/pokemon-service';
@@ -14,9 +14,7 @@ function PokemonEdit() {
   const [pokemon, setPokemon] = useState<Pokemon | undefined>();
 
   useEffect(() => {
-    getPokemon(Number(params.id)).then((pokemon) =>
-      setPokemon(pokemon)
-    );
+    getPokemon(Number(params.id)).then((pokemon) => setPokemon(pokemon));
   }, [params.id]);
 
   return (

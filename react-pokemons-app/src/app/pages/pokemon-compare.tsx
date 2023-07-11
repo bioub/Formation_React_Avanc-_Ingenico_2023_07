@@ -25,7 +25,7 @@ function PokemonCompare() {
         <PokemonCardDetails pokemon={pokemon2} />
       </div>
     </div>
-  )
+  );
 }
 
 export default PokemonCompare;

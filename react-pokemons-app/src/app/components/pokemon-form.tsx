@@ -213,6 +213,7 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
   function isAddForm(): boolean {
     return !isEditForm;
   }
+
   async function handleAddPokemon() {
     await addPokemon(pokemon);
     navigate(`/pokemons`);
@@ -348,10 +349,31 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
                   ))
                   */}
                   {/* React.createElement(MultiSelect, { items: ['Bleu','Blanc', 'Rouge'}) */}
-                  <MultiSelect items={types} selected={form.types.value} renderValues={(values) => <>{values.map((value) => <div className={formatType(value as pokemonTypes)}>{value}</div>)}</>} renderItem={(item) => <div className={formatType(item as pokemonTypes)}>{item}</div>} onSelect={(newSelection) => {
-                    console.log(newSelection)
-                    setForm({ ...form, ...{ types: { value: newSelection } } });
-                  }}/>
+                  <MultiSelect
+                    items={types}
+                    selected={form.types.value}
+                    renderValues={(values) => (
+                      <>
+                        {values.map((value) => (
+                          <div className={formatType(value as pokemonTypes)}>
+                            {value}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                    renderItem={(item) => (
+                      <div className={formatType(item as pokemonTypes)}>
+                        {item}
+                      </div>
+                    )}
+                    onSelect={(newSelection) => {
+                      console.log(newSelection);
+                      setForm({
+                        ...form,
+                        ...{ types: { value: newSelection } },
+                      });
+                    }}
+                  />
                 </div>
               </div>
               <div className="card-action center">

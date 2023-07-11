@@ -1,6 +1,5 @@
 import { forwardRef, MouseEvent, Ref, useState } from 'react';
 
-
 // Uncontrolled component
 /*
 function LikeButton() {
@@ -18,9 +17,17 @@ function LikeButton() {
 type Props = {
   likes?: number;
   onIncrement?(): void;
-}
-function LikeButton({ likes, onIncrement }: Props, ref: Ref<HTMLButtonElement>) {
-  return <button className="LikeButton" ref={ref}>0</button>
+};
+
+function LikeButton(
+  { likes, onIncrement }: Props,
+  ref: Ref<HTMLButtonElement>
+) {
+  return (
+    <button className="LikeButton" ref={ref}>
+      0
+    </button>
+  );
 }
 
 export default forwardRef(LikeButton);

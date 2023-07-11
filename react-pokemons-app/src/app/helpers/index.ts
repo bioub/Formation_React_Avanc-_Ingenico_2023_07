@@ -1,4 +1,4 @@
-import { pokemonTypes } from "../models/pokemon";
+import { pokemonTypes } from '../models/pokemon';
 
 export function formatType(type: pokemonTypes): string {
   const colors: Record<pokemonTypes, string> = {
@@ -17,7 +17,6 @@ export function formatType(type: pokemonTypes): string {
 
   return `chip ${colors[type] ?? 'grey'}`;
 }
-
 
 export function formatDate(date: Date = new Date()): string {
   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;

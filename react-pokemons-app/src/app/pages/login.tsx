@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { login } from '../services/authentication-service';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,16 +14,23 @@ type Form = {
   password: Field;
 };
 
+// t('login.banner.default')
+// t('login.banner.loading')
+// t('login.banner.error')
+
 function Login() {
+  console.log('render Login')
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [form, setForm] = useState<Form>({
     username: { value: 'pikachu' },
     password: { value: 'pikachu' },
   });
 
-  const [message, setMessage] = useState<string>(
-    'Vous êtes déconnecté. (pikachu / pikachu)'
+  const [messageKey, setMessageKey] = useState<string>(
+    // Vous êtes déconnecté. (pikachu / pikachu)
+    'login.banner.default'
   );
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -83,11 +91,13 @@ function Login() {
     event.preventDefault();
     const isFormValid = validateForm();
     if (isFormValid) {
-      setMessage('👉 Tentative de connexion en cours ...');
+      // '👉 Tentative de connexion en cours ...'
+      setMessageKey('login.banner.loading');
       login(form.username.value, form.password.value).then(
         (isAuthenticated) => {
           if (!isAuthenticated) {
-            setMessage('🔐 Identifiant ou mot de passe incorrect.');
+            // '🔐 Identifiant ou mot de passe incorrect.'
+            setMessageKey('login.banner.error');
             return;
           }
 
@@ -104,10 +114,10 @@ function Login() {
           <div className="card hoverable">
             <div className="card-stacked">
               <div className="card-content">
-                {/* Form message */}
-                {message && (
+                {/* Form messageKey */}
+                {messageKey && (
                   <div className="form-group">
-                    <div className="card-panel grey lighten-5">{message}</div>
+                    <div className="card-panel grey lighten-5">{t(messageKey)}</div>
                   </div>
                 )}
                 {/* Field username */}
@@ -150,7 +160,7 @@ function Login() {
               <div className="card-action center">
                 {/* Submit button */}
                 <button type="submit" className="btn">
-                  Valider
+                  {t('login.button')}
                 </button>
               </div>
             </div>

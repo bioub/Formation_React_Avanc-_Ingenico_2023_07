@@ -7,6 +7,7 @@ import {
   deletePokemon,
   updatePokemon,
 } from '../services/pokemon-service';
+import Button from './Button';
 import MultiSelect from './multi-select';
 
 type Props = {
@@ -346,7 +347,7 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
                         </span>
                       </label>
                     </div>
-                  ))
+                  ))x
                   */}
                   {/* React.createElement(MultiSelect, { items: ['Bleu','Blanc', 'Rouge'}) */}
                   <MultiSelect
@@ -367,7 +368,7 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
                       </div>
                     )}
                     onSelect={(newSelection) => {
-                      console.log(newSelection);
+                      // console.log(newSelection);
                       setForm({
                         ...form,
                         ...{ types: { value: newSelection } },
@@ -378,9 +379,9 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
               </div>
               <div className="card-action center">
                 {/* Submit button */}
-                <button type="submit" className="btn">
+                <Button type="submit">
                   Valider
-                </button>
+                </Button>
               </div>
             </div>
           </div>

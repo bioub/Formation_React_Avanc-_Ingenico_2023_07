@@ -1,8 +1,9 @@
+import classNames from 'classnames';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { CompareContext } from '../helpers/compare-context';
 import { Pokemon } from '../models/pokemon';
-import './pokemon-card.css';
+import styles from './pokemon-card.module.css';
 import { formatDate, formatType } from '../helpers';
 import LikeButton from './like-button';
 
@@ -33,7 +34,7 @@ function PokemonCard({ pokemon }: Props) {
 
   return (
     <div className="col s6 m4" onClick={() => goToPokemon(pokemon.id ?? 0)}>
-      <div className="card horizontal">
+      <div className={classNames('card', 'horizontal', styles.horizontal)}>
         <div className="card-image">
           <img src={pokemon.picture} alt={pokemon.name} />
         </div>
@@ -48,10 +49,16 @@ function PokemonCard({ pokemon }: Props) {
                 {type}
               </span>
             ))}
-            <label onClick={(event) => {
-              event.stopPropagation();
-            }}>
-              <input type="checkbox" checked={pokemonsIdsToCompare.has(pokemon.id ?? 0)} onChange={() => selectPokemonToCompare(pokemon.id ?? 0)} />
+            <label
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={pokemonsIdsToCompare.has(pokemon.id ?? 0)}
+                onChange={() => selectPokemonToCompare(pokemon.id ?? 0)}
+              />
               <span>Compare</span>
             </label>
             <LikeButton ref={buttonRef} />

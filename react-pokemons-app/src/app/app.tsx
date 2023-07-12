@@ -1,4 +1,7 @@
+import { Suspense, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import List from './components/List';
 import RenderTryCatch from './components/render-try-catch';
 import { CompareProvider } from './helpers/compare-context';
 import PokemonCompare from './pages/pokemon-compare';
@@ -11,6 +14,9 @@ import Login from './pages/login';
 import PrivateRoute from './private-route';
 
 function App() {
+  const [selectedLang, setSelectedLang] = useState('fr');
+  const { t, i18n } = useTranslation()
+
   return (
     <BrowserRouter>
       <CompareProvider>
@@ -18,11 +24,27 @@ function App() {
           <nav>
             <div className="nav-wrapper teal">
               <Link to="/" className="brand-logo center">
-                Pokédex
+                {t('home.title')}
               </Link>
+              <List
+                items={['fr', 'en']}
+                renderItem={(lang) => (
+                  <button key={lang}
+                    onClick={() => {
+                      i18n.changeLanguage(lang).then(() => {
+                        setSelectedLang(lang);
+                      });
+                    }}
+                    disabled={selectedLang === lang}
+                  >
+                    {lang}
+                  </button>
+                )}
+              />
             </div>
           </nav>
           <RenderTryCatch>
+            <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route index path="/" element={<PokemonsList />} />
               <Route path="/login" element={<Login />} />
@@ -35,6 +57,7 @@ function App() {
               </Route>
               <Route element={<PageNotFound />} />
             </Routes>
+            </Suspense>
           </RenderTryCatch>
         </div>
       </CompareProvider>

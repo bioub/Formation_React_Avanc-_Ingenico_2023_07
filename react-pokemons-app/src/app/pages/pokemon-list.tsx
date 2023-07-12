@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
+import List from '../components/List';
 import { Pokemon } from '../models/pokemon';
 import PokemonCard from '../components/pokemon-card';
 import { getPokemons } from '../services/pokemon-service';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import PokemonSearch from '../components/pokemon-search';
 import { isAuthenticated } from '../services/authentication-service';
 
+function useAuthentication() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated) {
+      console.log('redirect to login')
+      navigate({ pathname: '/login' });
+    }
+  }, []);
+}
+
 function PokemonList() {
-  if (!isAuthenticated) {
-    return <Navigate to={{ pathname: '/login' }} />;
-  }
+  useAuthentication();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   useEffect(() => {
@@ -22,9 +31,7 @@ function PokemonList() {
       <div className="container">
         <div className="row">
           <PokemonSearch />
-          {pokemons.map((pokemon) => (
-            <PokemonCard key={pokemon.id} pokemon={pokemon} />
-          ))}
+          <List items={pokemons} renderItem={(pokemon) => <PokemonCard key={pokemon.id} pokemon={pokemon} />} />
         </div>
         <Link to="/pokemons/compare">Compare</Link>
       </div>

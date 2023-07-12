@@ -1,0 +1,13 @@
+{
+  "home": {
+    "title": "My super Pokedex"
+  },
+  "login": {
+    "banner": {
+      "default": "You are disconnected. (pikachu / pikachu)",
+      "error": "🔐 Bad credentials.",
+      "loading": "👉 Connection ..."
+    },
+    "button": "Submit"
+  }
+}

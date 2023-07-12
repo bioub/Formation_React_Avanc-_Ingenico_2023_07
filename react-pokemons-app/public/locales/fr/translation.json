@@ -1,0 +1,13 @@
+{
+  "home": {
+    "title": "Mon super Pokedex"
+  },
+  "login": {
+    "banner": {
+      "default": "Vous êtes déconnecté. (pikachu / pikachu)",
+      "error": "🔐 Identifiant ou mot de passe incorrect.",
+      "loading": "👉 Tentative de connexion en cours ..."
+    },
+    "button": "Valider"
+  }
+}

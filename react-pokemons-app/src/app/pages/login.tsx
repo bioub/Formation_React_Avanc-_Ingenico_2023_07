@@ -1,104 +1,40 @@
-import { useState } from 'react';
+import { forwardRef, Ref, useId, useState } from 'react';
+import { FieldError, FieldErrors, FieldValues, useForm } from 'react-hook-form';
 import { login } from '../services/authentication-service';
 import { useNavigate } from 'react-router-dom';
 
-type Field = {
-  value?: any;
-  error?: string;
-  isValid?: boolean;
-};
-
-type Form = {
-  username: Field;
-  password: Field;
+type Credentials = {
+  username: string;
+  password: string;
 };
 
 function Login() {
   const navigate = useNavigate();
 
-  const [form, setForm] = useState<Form>({
-    username: { value: 'pikachu' },
-    password: { value: 'pikachu' },
-  });
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<Credentials>();
 
   const [message, setMessage] = useState<string>(
     'Vous êtes déconnecté. (pikachu / pikachu)'
   );
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const fieldName: string = e.target.name;
-    const fieldValue: string = e.target.value;
-    const newField: Field = { [fieldName]: { value: fieldValue } };
+  function onSubmit(data: Credentials) {
+    setMessage('👉 Tentative de connexion en cours ...');
+    login(data.username, data.password).then((isAuthenticated) => {
+      if (!isAuthenticated) {
+        setMessage('🔐 Identifiant ou mot de passe incorrect.');
+        return;
+      }
 
-    setForm({ ...form, ...newField });
-  }
-
-  function validateForm() {
-    let newForm: Form = form;
-
-    // Validator username
-    if (form.username.value.length < 3) {
-      const errorMsg: string =
-        'Votre prénom doit faire au moins 3 caractères de long.';
-      const newField: Field = {
-        value: form.username.value,
-        error: errorMsg,
-        isValid: false,
-      };
-      newForm = { ...newForm, ...{ username: newField } };
-    } else {
-      const newField: Field = {
-        value: form.username.value,
-        error: '',
-        isValid: true,
-      };
-      newForm = { ...newForm, ...{ username: newField } };
-    }
-
-    // Validator password
-    if (form.password.value.length < 6) {
-      const errorMsg: string =
-        'Votre mot de passe doit faire au moins 6 caractères de long.';
-      const newField: Field = {
-        value: form.password.value,
-        error: errorMsg,
-        isValid: false,
-      };
-      newForm = { ...newForm, ...{ password: newField } };
-    } else {
-      const newField: Field = {
-        value: form.password.value,
-        error: '',
-        isValid: true,
-      };
-      newForm = { ...newForm, ...{ password: newField } };
-    }
-
-    setForm(newForm);
-
-    return newForm.username.isValid && newForm.password.isValid;
-  }
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const isFormValid = validateForm();
-    if (isFormValid) {
-      setMessage('👉 Tentative de connexion en cours ...');
-      login(form.username.value, form.password.value).then(
-        (isAuthenticated) => {
-          if (!isAuthenticated) {
-            setMessage('🔐 Identifiant ou mot de passe incorrect.');
-            return;
-          }
-
-          navigate('/pokemons');
-        }
-      );
-    }
+      navigate('/pokemons');
+    });
   }
 
   return (
-    <form onSubmit={(e) => handleSubmit(e)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="row">
         <div className="col s12 m8 offset-m2">
           <div className="card hoverable">
@@ -112,39 +48,28 @@ function Login() {
                 )}
                 {/* Field username */}
                 <div className="form-group">
-                  <label htmlFor="username">Identifiant</label>
-                  <input
-                    id="username"
-                    type="text"
-                    name="username"
-                    className="form-control"
-                    value={form.username.value}
-                    onChange={(e) => handleInputChange(e)}
-                  ></input>
-                  {/* error */}
-                  {form.username.error && (
-                    <div className="card-panel red accent-1">
-                      {form.username.error}
-                    </div>
-                  )}
+                  <Input label="Identifiant" type="text" {...register('username', {
+                    minLength: {
+                      value: 3,
+                      message: 'Au moins 3',
+                    },
+                  })} />
+                  <Errors error={errors.username} />
                 </div>
                 {/* Field password */}
                 <div className="form-group">
-                  <label htmlFor="password">Mot de passe</label>
-                  <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    value={form.password.value}
-                    onChange={(e) => handleInputChange(e)}
-                  ></input>
-                  {/* error */}
-                  {form.password.error && (
-                    <div className="card-panel red accent-1">
-                      {form.password.error}
-                    </div>
-                  )}
+                  <Input
+                    label={'Mot de passe'}
+                    type={'password'}
+                    {...register('password', {
+                      required: {
+                        value: true,
+                        message: 'Password error',
+                      },
+                      minLength: { value: 6, message: 'Password error' },
+                    })}
+                  />
+                  <Errors error={errors.password} />
                 </div>
               </div>
               <div className="card-action center">
@@ -159,6 +84,34 @@ function Login() {
       </div>
     </form>
   );
+}
+
+type InputProps = {
+  label: string;
+  type: string;
+};
+
+const Input = forwardRef(function Input({ label, type }: InputProps, ref: Ref<HTMLInputElement>) {
+  const id = useId();
+
+  return (
+    <>
+      <label htmlFor={id}>{label}</label>
+      <input id={id} type={type} className="form-control" ref={ref} />
+    </>
+  );
+})
+
+type ErrorsProps = {
+  error?: FieldError;
+};
+
+function Errors({ error }: ErrorsProps) {
+  if (!error) {
+    return null;
+  }
+
+  return <div className="card-panel red accent-1">{error.message}</div>;
 }
 
 export default Login;

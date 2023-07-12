@@ -5,6 +5,7 @@ type Props = {
 }
 
 function Button({type, children}: PropsWithChildren<Props>) {
+  console.log('render Button');
   return (
     <button type={type} className="btn">{children}</button>
   )

@@ -1,6 +1,6 @@
-import { Pokemon } from './pokemon';
+import { memoize } from 'lodash-es';
 
-const POKEMONS_TEMPLATE: Pokemon[] = [
+const POKEMONS_TEMPLATE = [
   {
     id: 1,
     name: 'Bulbizarre',
@@ -122,10 +122,35 @@ const POKEMONS_TEMPLATE: Pokemon[] = [
     created: new Date(),
   },
 ];
-export let POKEMONS: Pokemon[] = [];
+export let POKEMONS = [];
 
-for (let i = 0; i <200; i++) {
+for (let i = 0; i <20_000; i++) {
   POKEMONS = [...POKEMONS, ...POKEMONS_TEMPLATE.map((poke) => ({...poke, id: (poke.id ?? 0) * (i + 1)}))];
 }
 
-export default POKEMONS;
+
+function filterPoke(pokemons) {
+  return pokemons.filter((poke) => poke.cp < 5);
+}
+
+const memoFilterPoke = memoize(filterPoke);
+
+console.time('Temps');
+console.log('Nombre : ', memoFilterPoke(POKEMONS).length);
+console.timeEnd('Temps');
+
+console.time('Temps');
+console.log('Nombre : ', memoFilterPoke(POKEMONS).length);
+console.timeEnd('Temps');
+
+// Avec la mémoisation
+// les changements devront être immuable
+// muable (modifié l'objet existant) :
+// POKEMONS.push({cp:1})
+
+// immuable (créé un nouvel objet) :
+POKEMONS = [...POKEMONS, {cp:1}];
+
+console.time('Temps');
+console.log('Nombre : ', memoFilterPoke(POKEMONS).length);
+console.timeEnd('Temps');

@@ -6,10 +6,12 @@ export function isEmpty(data: Object): boolean {
 }
 
 export async function getPokemons(): Promise<Pokemon[]> {
+  /*
   if (import.meta.env.DEV) {
     const response = await fetch('http://localhost:3001/pokemons');
     return await response.json();
   }
+   */
 
   return POKEMONS;
 }

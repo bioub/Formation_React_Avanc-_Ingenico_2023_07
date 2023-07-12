@@ -12,6 +12,7 @@ type Props = {
 };
 
 function PokemonCard({ pokemon }: Props) {
+  console.log('render PokemonCard')
   const navigate = useNavigate();
   // const [likes, setLikes] = useState(0);
 

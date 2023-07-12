@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button from '../components/Button';
 import { login } from '../services/authentication-service';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,6 +35,7 @@ function Login() {
   );
 
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    console.log('handleInputChange')
     const fieldName: string = e.target.name;
     const fieldValue: string = e.target.value;
     const newField: Field = { [fieldName]: { value: fieldValue } };
@@ -159,9 +161,9 @@ function Login() {
               </div>
               <div className="card-action center">
                 {/* Submit button */}
-                <button type="submit" className="btn">
+                <Button type="submit">
                   {t('login.button')}
-                </button>
+                </Button>
               </div>
             </div>
           </div>

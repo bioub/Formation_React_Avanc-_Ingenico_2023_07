@@ -3,8 +3,14 @@ import { Link } from 'react-router-dom';
 import { Pokemon } from '../models/pokemon';
 import { searchPokemon } from '../services/pokemon-service';
 
-function PokemonSearch() {
-  const [term, setTerm] = useState('');
+type Props = {
+  term: string;
+  setTerm(term: string): void;
+}
+
+function PokemonSearch({ term, setTerm }: Props) {
+  console.log('render PokemonSearch')
+
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {

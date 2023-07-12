@@ -18,7 +18,9 @@ function useAuthentication() {
 }
 
 function PokemonList() {
+  console.log('render PokemonList')
   useAuthentication();
+  const [term, setTerm] = useState('');
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ function PokemonList() {
       <h1 className="center">Pokédex</h1>
       <div className="container">
         <div className="row">
-          <PokemonSearch />
+          <PokemonSearch term={term} setTerm={setTerm} />
           <List items={pokemons} renderItem={(pokemon) => <PokemonCard key={pokemon.id} pokemon={pokemon} />} />
         </div>
         <Link to="/pokemons/compare">Compare</Link>

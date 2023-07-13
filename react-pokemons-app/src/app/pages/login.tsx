@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Button from '../components/Button';
+import Button from '../components/button';
+import Counter from '../components/counter';
 import { login } from '../services/authentication-service';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,6 +22,8 @@ type Form = {
 
 function Login() {
   console.log('render Login')
+  const [count, setCount] = useState(0);
+
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -169,6 +172,7 @@ function Login() {
           </div>
         </div>
       </div>
+      <Counter count={count} onIncrement={() => setCount(count + 1)} />
     </form>
   );
 }

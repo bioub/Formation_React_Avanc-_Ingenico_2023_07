@@ -128,3 +128,9 @@ Configurer et extraire les clés de traduction avec `i18next-parser` comme dans 
 Remplir les fichiers de traduction.
 
 Créer 2 boutons `fr` et `en` dans le menu pokedex dans `app.tsx`, changer la langue au click de ces boutons (`i18n.changeLanguage('fr')`)
+
+## Automatisation des tests
+
+Tester unitairement le composant `MultiSelect` :
+- lorsqu'on lui passe des valeurs préselectionnées on ne doit pas voir "Select..."
+- lorsqu'on ne lui passe pas de valeurs préselectionnées et qu'on clique sur "Select...", on doit voir la liste des valeurs de items à l'écran (au moins la première)

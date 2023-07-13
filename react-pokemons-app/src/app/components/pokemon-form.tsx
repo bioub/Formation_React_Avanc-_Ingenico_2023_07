@@ -7,7 +7,7 @@ import {
   deletePokemon,
   updatePokemon,
 } from '../services/pokemon-service';
-import Button from './Button';
+import Button from './button';
 import MultiSelect from './multi-select';
 
 type Props = {

@@ -6,7 +6,8 @@
       "vitest/globals",
       "vitest/importMeta",
       "vite/client",
-      "node"
+      "node",
+      "@testing-library/jest-dom"
     ]
   },
   "include": [

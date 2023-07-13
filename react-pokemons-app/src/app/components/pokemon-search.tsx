@@ -5,24 +5,26 @@ import { searchPokemon } from '../services/pokemon-service';
 
 type Props = {
   term: string;
-  setTerm(term: string): void;
+  onTermUpdate(term: string): void;
 }
 
-function PokemonSearch({ term, setTerm }: Props) {
+function PokemonSearch({ term, onTermUpdate }: Props) {
   console.log('render PokemonSearch')
 
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  // const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const term = event.target.value;
-    setTerm(term);
+    onTermUpdate(term);
 
+    /*
     if (term.length <= 1) {
       setPokemons([]);
       return;
     }
 
     searchPokemon(term).then((pokemons) => setPokemons(pokemons));
+     */
   }
 
   return (
@@ -38,6 +40,7 @@ function PokemonSearch({ term, setTerm }: Props) {
                 onChange={(e) => handleInputChange(e)}
               />
             </div>
+            {/*
             <div className="collection">
               {pokemons.map((pokemon) => (
                 <Link
@@ -49,6 +52,7 @@ function PokemonSearch({ term, setTerm }: Props) {
                 </Link>
               ))}
             </div>
+            */}
           </div>
         </div>
       </div>

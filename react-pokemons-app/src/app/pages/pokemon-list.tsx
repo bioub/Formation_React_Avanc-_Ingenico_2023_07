@@ -1,11 +1,15 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import List from '../components/List';
+import Loader from '../components/loader';
 import { Pokemon } from '../models/pokemon';
 import PokemonCard from '../components/pokemon-card';
 import { getPokemons } from '../services/pokemon-service';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import PokemonSearch from '../components/pokemon-search';
 import { isAuthenticated } from '../services/authentication-service';
+import { requestItems, requestItemsStarted, requestItemsSucceed, updateSearchTerm } from '../store/actions';
+import { filteredPokemonsSelector, pokemonsSelector } from '../store/selectors';
 
 function useAuthentication() {
   const navigate = useNavigate();
@@ -22,31 +26,24 @@ function useAuthentication() {
 function PokemonList() {
   console.log('render PokemonList')
  // useAuthentication();
-  const [term, setTerm] = useState('');
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
-  /*
-  function longTaskSync(pokemons: Pokemon[]) {
-    const debut = Date.now();
-    while (debut + 1000 > Date.now()) {}
+  const {loading, searchTerm} = useSelector(pokemonsSelector);
+  const filteredPokemons = useSelector(filteredPokemonsSelector);
+  const dispatch = useDispatch();
 
-    return pokemons;
-  }
-  */
+  // const [term, setTerm] = useState('');
+  // const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
-  // const val = longTaskSync(pokemons);
-  //const val = useMemo(() => longTaskSync(pokemons), [pokemons]); // memoisé (se réexécute si pokemons change)
-  //console.log(val.length);
-
-  // avec useMemo on pourrait memoisé une fonction :
-  // const renderPokemonCard = useMemo(() => (pokemon: Pokemon) => <PokemonCard key={pokemon.id} pokemon={pokemon} />, []);
-
-  // Dans ce cas on peut simplifier avec useCallback (si la valeur memoisé est une fonction) :
   const renderPokemonCard = useCallback((pokemon: Pokemon) => <PokemonCard key={pokemon.id} pokemon={pokemon} />, []);
 
 
   useEffect(() => {
-    getPokemons().then((pokemons) => setPokemons(pokemons));
+    dispatch(requestItems());
+    /*
+    dispatch(requestItemsStarted());
+    getPokemons().then((pokemons) => dispatch(requestItemsSucceed(pokemons)));
+    */
+
   }, []);
 
   return (
@@ -54,8 +51,8 @@ function PokemonList() {
       <h1 className="center">Pokédex</h1>
       <div className="container">
         <div className="row">
-          <PokemonSearch term={term} setTerm={setTerm} />
-          <List items={pokemons} renderItem={renderPokemonCard} />
+          <PokemonSearch term={searchTerm} onTermUpdate={(term) => dispatch(updateSearchTerm(term))} />
+          {loading ? <Loader /> : <List items={filteredPokemons} renderItem={renderPokemonCard} />}
         </div>
         <Link to="/pokemons/compare">Compare</Link>
       </div>

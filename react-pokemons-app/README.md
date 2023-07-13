@@ -134,3 +134,45 @@ Créer 2 boutons `fr` et `en` dans le menu pokedex dans `app.tsx`, changer la la
 Tester unitairement le composant `MultiSelect` :
 - lorsqu'on lui passe des valeurs préselectionnées on ne doit pas voir "Select..."
 - lorsqu'on ne lui passe pas de valeurs préselectionnées et qu'on clique sur "Select...", on doit voir la liste des valeurs de items à l'écran (au moins la première)
+
+## Redux
+
+Nous allons migrer `CompareContext` vers Redux.
+
+Ajouter une nouvelle clé `idsToCompare` au state `pokemons` (de type `number[]`, ici il ne faut pas utiliser un `Set` car le state doit être sérialisable)
+
+Le state global stocké dans Redux sera donc de la forme :
+```
+{
+  items: [], // tableau de pokemons,
+  loading: false, // est-ce qu'une requete est en cours,
+  searchTerm: '', // le contenu du champ de recherche
+  idsToCompare: [2, 5], // les ids des pokemons à comparer
+}
+```
+
+Créer un action creator `selectId` qui retourne un objet :
+
+```
+{
+type: '@pokemons/selectId',
+payload: 2, // l'id du pokemon sélectionné
+}
+```
+
+Modifier le reducer `pokemonsReducer` de sorte à ce qu'il modifie le state comme précédemment avec le context (ajoute l'id si absent de `idsToCompare`, retire l'id sinon)
+
+Tester avec Redux DevTools en faisant des dispatch de l'action :
+
+```
+{
+type: '@pokemons/selectId',
+payload: 2, // l'id du pokemon sélectionné
+}
+```
+
+Utiliser `useDispatch` pour créer l'action `@pokemons/selectId` lorsqu'on coche la case `Compare` dans `PokemonCard`
+
+Utiliser `pokemonsSelector` pour récupérer les `idsToCompare` dans `PokemonCard` et cocher ou décocher la case `Compare`
+
+Créer un sélecteur `pokemonsToCompareSelector` qui transforme la clé `idsToCompare` du state en tableau de pokemon à comparer. Appeler ce selecteur dans `PokemonCompare`, appeler `getPokemons` en faisant les bons `dispatch` au cas où la personne accède à la page `/pokemons/compare` sans passer par la liste.

@@ -1,0 +1,17 @@
+{
+  "name": "hello-redux",
+  "version": "1.0.0",
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
+    "redux": "^4.2.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "scripts": {
+    "start:ex1": "ts-node 01-hello/index.ts",
+    "start:ex2": "ts-node 02-bonnes-pratiques/index.ts",
+    "start:ex3": "ts-node 03-redux-toolkit/index.ts"
+  }
+}

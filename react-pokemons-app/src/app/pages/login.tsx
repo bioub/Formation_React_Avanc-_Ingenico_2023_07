@@ -15,9 +15,9 @@ type Form = {
   password: Field;
 };
 
+// t('login.banner.error')
 // t('login.banner.default')
 // t('login.banner.loading')
-// t('login.banner.error')
 
 function Login() {
   console.log('render Login')

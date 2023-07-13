@@ -128,7 +128,11 @@ for (let i = 0; i <20_000; i++) {
   POKEMONS = [...POKEMONS, ...POKEMONS_TEMPLATE.map((poke) => ({...poke, id: (poke.id ?? 0) * (i + 1)}))];
 }
 
-
+// la memoisation fonctionne pour les fonctions pures :
+// - pour des params d'entrés le retour est toujours le même
+// (ex: sum(1, 2) === 3, Math.random() === ???, Date.now() === ???)
+// - pas de side-effect, pas d'appels externes (requete HTTP ou localStorage...)
+// - ne modifie pas ses params (si tableau ou objet)
 function filterPoke(pokemons) {
   return pokemons.filter((poke) => poke.cp < 5);
 }

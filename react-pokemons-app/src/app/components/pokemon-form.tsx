@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pokemon, pokemonTypes } from '../models/pokemon';
 import { formatType } from '../helpers';
@@ -29,6 +29,24 @@ type Form = {
   types: Field;
 };
 
+const renderValues = (values: string[]) => (
+  <>
+    {values.map((value) => (
+      <div className={formatType(value as pokemonTypes)}>
+        {value}
+      </div>
+    ))}
+  </>
+);
+
+const renderItem = (item: string) => (
+  <div className={formatType(item as pokemonTypes)}>
+    {item}
+  </div>
+);
+
+
+
 function PokemonForm({ pokemon, isEditForm }: Props) {
   const navigate = useNavigate();
 
@@ -39,6 +57,14 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
     cp: { value: pokemon.cp, isValid: true },
     types: { value: pokemon.types ?? [], isValid: true },
   });
+
+  const handleSelect = useCallback((newSelection: string[]) => {
+    // console.log(newSelection);
+    setForm({
+      ...form,
+      ...{ types: { value: newSelection } },
+    });
+  }, [form]);
 
   const types: pokemonTypes[] = [
     'Plante',
@@ -353,27 +379,9 @@ function PokemonForm({ pokemon, isEditForm }: Props) {
                   <MultiSelect
                     items={types}
                     selected={form.types.value}
-                    renderValues={(values) => (
-                      <>
-                        {values.map((value) => (
-                          <div className={formatType(value as pokemonTypes)}>
-                            {value}
-                          </div>
-                        ))}
-                      </>
-                    )}
-                    renderItem={(item) => (
-                      <div className={formatType(item as pokemonTypes)}>
-                        {item}
-                      </div>
-                    )}
-                    onSelect={(newSelection) => {
-                      // console.log(newSelection);
-                      setForm({
-                        ...form,
-                        ...{ types: { value: newSelection } },
-                      });
-                    }}
+                    renderValues={renderValues}
+                    renderItem={renderItem}
+                    onSelect={handleSelect}
                   />
                 </div>
               </div>

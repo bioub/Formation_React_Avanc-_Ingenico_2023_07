@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 
 type Props<T> = {
   items: T[];
@@ -13,7 +13,7 @@ function List<T>({ items, renderItem }: Props<T>) {
   )
 }
 
-export default List;
+export default memo(List);
 
 // List({items: ['Bleu', 'Vert'], renderItem(item) { return <></>}})
 

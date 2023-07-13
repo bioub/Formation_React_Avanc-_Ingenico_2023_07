@@ -6,6 +6,10 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
   cacheDir: './node_modules/.vite/react-pokemons-app',
 
+  build: {
+    sourcemap: true,
+  },
+
   server: {
     port: 4200,
     host: 'localhost',

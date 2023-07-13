@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import List from '../components/List';
 import { Pokemon } from '../models/pokemon';
 import PokemonCard from '../components/pokemon-card';
@@ -17,11 +17,30 @@ function useAuthentication() {
   }, []);
 }
 
+
 function PokemonList() {
   console.log('render PokemonList')
-  useAuthentication();
+ // useAuthentication();
   const [term, setTerm] = useState('');
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+
+  function longTaskSync(pokemons: Pokemon[]) {
+    const debut = Date.now();
+    while (debut + 1000 > Date.now()) {}
+
+    return pokemons;
+  }
+
+  // const val = longTaskSync(pokemons);
+  const val = useMemo(() => longTaskSync(pokemons), [pokemons]); // memoisé (se réexécute si pokemons change)
+  console.log(val.length);
+
+  // avec useMemo on pourrait memoisé une fonction :
+  // const renderPokemonCard = useMemo(() => (pokemon: Pokemon) => <PokemonCard key={pokemon.id} pokemon={pokemon} />, []);
+
+  // Dans ce cas on peut simplifier avec useCallback (si la valeur memoisé est une fonction) :
+  const renderPokemonCard = useCallback((pokemon: Pokemon) => <PokemonCard key={pokemon.id} pokemon={pokemon} />, []);
+
 
   useEffect(() => {
     getPokemons().then((pokemons) => setPokemons(pokemons));
@@ -33,7 +52,7 @@ function PokemonList() {
       <div className="container">
         <div className="row">
           <PokemonSearch term={term} setTerm={setTerm} />
-          <List items={pokemons} renderItem={(pokemon) => <PokemonCard key={pokemon.id} pokemon={pokemon} />} />
+          <List items={pokemons} renderItem={renderPokemonCard} />
         </div>
         <Link to="/pokemons/compare">Compare</Link>
       </div>

@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import List from './components/List';
@@ -6,17 +6,20 @@ import RenderTryCatch from './components/render-try-catch';
 import { CompareProvider } from './helpers/compare-context';
 import PokemonCompare from './pages/pokemon-compare';
 import PokemonsList from './pages/pokemon-list';
-import PokemonsDetail from './pages/pokemon-detail';
+// import PokemonsDetail from './pages/pokemon-detail';
 import PokemonEdit from './pages/pokemon-edit';
 import PokemonAdd from './pages/pokemon-add';
 import PageNotFound from './pages/page-not-found';
 import Login from './pages/login';
 import PrivateRoute from './private-route';
 
+const PokemonsDetail = lazy(() => import('./pages/pokemon-detail'));
+
 function App() {
   const [selectedLang, setSelectedLang] = useState('fr');
   const { t, i18n } = useTranslation()
 
+  // @ts-ignore
   return (
     <BrowserRouter>
       <CompareProvider>
@@ -44,7 +47,7 @@ function App() {
             </div>
           </nav>
           <RenderTryCatch>
-            <Suspense fallback={<div>Loading...</div>}>
+
             <Routes>
               <Route index path="/" element={<PokemonsList />} />
               <Route path="/login" element={<Login />} />
@@ -53,11 +56,11 @@ function App() {
                 <Route path="/pokemon/add" element={<PokemonAdd />} />
                 <Route path="/pokemons/compare" element={<PokemonCompare />} />
                 <Route path="/pokemons/edit/:id" element={<PokemonEdit />} />
-                <Route path="/pokemons/:id" element={<PokemonsDetail />} />
+                <Route path="/pokemons/:id" element={<Suspense fallback={<div>Loading (Suspense)...</div>}><PokemonsDetail /></Suspense>} />
               </Route>
               <Route element={<PageNotFound />} />
             </Routes>
-            </Suspense>
+
           </RenderTryCatch>
         </div>
       </CompareProvider>

@@ -1,5 +1,6 @@
 import styles from './multi-select.module.css';
 import React, {
+  memo,
   MouseEvent as ReactMouseEvent,
   ReactNode,
   useEffect,
@@ -119,4 +120,4 @@ function MultiSelect({
   );
 }
 
-export default MultiSelect;
+export default memo(MultiSelect);

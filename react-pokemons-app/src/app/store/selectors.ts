@@ -13,7 +13,14 @@ export const filteredPokemonsSelector = createSelector(
       return pokemonsState.items;
     }
 
-    return pokemonsState.items.filter((p) => p.name?.includes(pokemonsState.searchTerm))
+    return pokemonsState.items.filter((p) => p.name?.toLowerCase().includes(pokemonsState.searchTerm.toLowerCase()))
+  }
+)
+
+export const pokemonsToCompareSelector = createSelector(
+  pokemonsSelector,
+  (pokemonsState) => {
+    return pokemonsState.idsToCompare.map((id) => pokemonsState.items.find((p) => p.id === id));
   }
 )
 

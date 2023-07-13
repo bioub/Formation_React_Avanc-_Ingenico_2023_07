@@ -1,8 +1,11 @@
 import classNames from 'classnames';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { CompareContext } from '../helpers/compare-context';
 import { Pokemon } from '../models/pokemon';
+import { selectId } from '../store/actions';
+import { pokemonsSelector } from '../store/selectors';
 import styles from './pokemon-card.module.css';
 import { formatDate, formatType } from '../helpers';
 import LikeButton from './like-button';
@@ -14,20 +17,12 @@ type Props = {
 function PokemonCard({ pokemon }: Props) {
   console.log('render PokemonCard')
   const navigate = useNavigate();
-  // const [likes, setLikes] = useState(0);
 
-  const { pokemonsIdsToCompare, selectPokemonToCompare } = useContext(CompareContext);
+  // TODO idéalement remonter la valeur via une props et faire le dispatch depuis la page PokemonList
+  // (séparation des responsabilité)
+  const dispatch = useDispatch();
+  const { idsToCompare } = useSelector(pokemonsSelector);
 
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    buttonRef.current?.addEventListener('click', (event) => {
-      event.stopPropagation();
-      (event.target as HTMLButtonElement).innerText = String(
-        Number((event.target as HTMLButtonElement).innerText) + 1
-      );
-    });
-  }, []);
 
   function goToPokemon(id: number) {
     navigate(`/pokemons/${id}`);
@@ -57,12 +52,12 @@ function PokemonCard({ pokemon }: Props) {
             >
               <input
                 type="checkbox"
-                checked={pokemonsIdsToCompare.has(pokemon.id ?? 0)}
-                onChange={() => selectPokemonToCompare(pokemon.id ?? 0)}
+                checked={idsToCompare.includes(pokemon.id ?? 0)}
+                disabled={!idsToCompare.includes(pokemon.id ?? 0) && idsToCompare.length === 2}
+                onChange={() => dispatch(selectId(pokemon.id ?? 0))}
               />
               <span>Compare</span>
             </label>
-            <LikeButton ref={buttonRef} />
           </div>
         </div>
       </div>

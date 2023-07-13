@@ -8,7 +8,7 @@ import { getPokemons } from '../services/pokemon-service';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import PokemonSearch from '../components/pokemon-search';
 import { isAuthenticated } from '../services/authentication-service';
-import { requestItems, requestItemsStarted, requestItemsSucceed, updateSearchTerm } from '../store/actions';
+import { requestItems, updateSearchTerm } from '../store/actions';
 import { filteredPokemonsSelector, pokemonsSelector } from '../store/selectors';
 
 function useAuthentication() {
@@ -38,10 +38,14 @@ function PokemonList() {
 
 
   useEffect(() => {
-    dispatch(requestItems());
+    dispatch(requestItems()); // avec redux-thunk
+
     /*
+    sans redux-thunk
     dispatch(requestItemsStarted());
-    getPokemons().then((pokemons) => dispatch(requestItemsSucceed(pokemons)));
+    getPokemons()
+      .then((pokemons) => dispatch(requestItemsSucceed(pokemons)))
+      .catch((err) => dispatch(requestItemsFailed(err)));
     */
 
   }, []);

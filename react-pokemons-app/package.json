@@ -9,6 +9,7 @@
     "start:api": "json-server --watch src/app/models/db.json --port=3001 --delay=500",
     "build": "nx build",
     "test": "nx test",
+    "coverage": "nx test --coverage",
     "i18n-extract": "i18next"
   },
   "private": true,

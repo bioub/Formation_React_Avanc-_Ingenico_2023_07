@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import * as service from '../services/pokemon-service'
 import PokemonList from './pokemon-list';

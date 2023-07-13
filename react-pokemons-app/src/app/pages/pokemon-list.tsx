@@ -55,7 +55,7 @@ function PokemonList() {
       <div className="container">
         <div className="row">
           <PokemonSearch term={term} setTerm={setTerm} />
-          <List items={['test', 'test']} renderItem={renderPokemonCard} />
+          <List items={pokemons} renderItem={renderPokemonCard} />
         </div>
         <Link to="/pokemons/compare">Compare</Link>
       </div>
